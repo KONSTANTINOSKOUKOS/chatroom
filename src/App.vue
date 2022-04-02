@@ -1,6 +1,8 @@
 <template>
-  <Message v-for="msg in state.msgs" :msg="msg" id="msg.id"/>
-  <Form/>
+  <div class="app">
+    <Message v-for="msg in state.msgs" :msg="msg" id="msg.id" />
+    <Form />
+  </div>
 </template>
 <script setup lang="ts">
 import state from './store/store'
@@ -15,9 +17,14 @@ provide('state', state);
 
 
 <style>
-*,*::before,*::after{
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.app {
+  min-height: 100vh;
 }
 </style>

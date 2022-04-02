@@ -9,7 +9,6 @@
 
     <input type="radio" value="john" v-model="state.watcher" />
     <label>John</label>
-
 </template>
 
 <script setup lang="ts">
@@ -29,5 +28,26 @@ const send = () => {
 </script>
 
 <style scoped>
-
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+form input {
+    width: 50rem;
+    height: 1.7rem;
+    border-radius: 13px;
+    background-color: rgb(226, 224, 224);
+    border: 0;
+    text-indent: 10px;
+}
+button {
+    font-size: 1.4rem;
+    margin-left: 1em;
+    border: 0;
+    padding: .4rem;
+    border-radius: 1rem;
+    background-color: rgb(226, 224, 224);
+    color: cornflowerblue;
+}
 </style>

@@ -51,17 +51,18 @@ p {
 }
 .right p {
     background-color: rgb(255, 0, 0);
+    text-align: center;
 }
 
-button{
+button {
     font-size: 1rem;
-    border:0;
+    border: 0;
     background-color: rgb(226, 224, 224);
-    border-radius: 50% ;
-    padding: .5rem;
+    border-radius: 50%;
+    padding: 0.5rem;
     height: fit-content;
 }
-button:hover{
-    filter:brightness(90%);
+button:hover {
+    filter: brightness(90%);
 }
 </style>
