@@ -1,14 +1,15 @@
 <template>
-    <div :class="[msg.sender == state.watcher ? 'left' : 'right']">
-        <p :class="[msg.sender == state.watcher ? 'senders' : 'others']">{{ msg.txt }}</p>
+    <div :class="msg.sender == state.watcher ? 'left' : 'right'">
+        <p :class="msg.sender == state.watcher ? 'senders' : 'others'">{{ msg.txt }}</p>
         <button @click="like()">{{ heart }}</button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, inject } from 'vue';
+import { istate } from '../store';
 
-const state = inject('state');
+const state = inject<istate>('state');
 const liked = ref(false);
 const heart = ref('🤍');
 
@@ -47,7 +48,8 @@ p {
     color: white;
 }
 .right {
-    justify-content: flex-end;
+    flex-direction: row-reverse;
+    margin-left: 1rem;
 }
 .right p {
     background-color: rgb(255, 0, 0);
@@ -61,6 +63,7 @@ button {
     border-radius: 50%;
     padding: 0.5rem;
     height: fit-content;
+    margin: 1rem;
 }
 button:hover {
     filter: brightness(90%);

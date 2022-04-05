@@ -13,16 +13,27 @@
 
 <script setup lang="ts">
 import { ref, inject } from "vue";
+import { istate } from '../store';
+import { addDoc, collection, getDoc, doc } from "firebase/firestore";
 
-const state = inject('state');
+const state = inject<istate>('state');
+const db = inject('db');
 const msg = ref('');
 
 const send = () => {
     if (msg.value != '') {
-        state.msgs.push({
-            id: Math.random(), txt: msg.value, sender: state.watcher
-        });
-        msg.value = ''
+        const message = {
+            id: Math.random(),
+            txt: msg.value,
+            sender: state.watcher,
+            liked: false
+        };
+        const coll =collection(db, 'messages'); 
+        addDoc(coll, message);
+        //state.msgs.push(message);// USE GET DATA 
+        msg.value = '';
+        const messages = getDoc(doc(db,'messages'));
+        console.log(messages);
     }
 }
 </script>
@@ -45,7 +56,7 @@ button {
     font-size: 1.4rem;
     margin-left: 1em;
     border: 0;
-    padding: .4rem;
+    padding: 0.4rem;
     border-radius: 1rem;
     background-color: rgb(226, 224, 224);
     color: cornflowerblue;

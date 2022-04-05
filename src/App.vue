@@ -1,20 +1,38 @@
 <template>
-  <div class="app">
-    <Message v-for="msg in state.msgs" :msg="msg" id="msg.id" />
-    <Form />
-  </div>
+  <Auth v-if="!state.user" />
+
+  <Chat v-else/>
+    
 </template>
 <script setup lang="ts">
-import state from './store/store'
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
+import state from './store';
 import { provide } from "vue";
 
-import Message from './components/Message.vue'
-import Form from './components/Form.vue'
+import Chat from "./components/Chat.vue";
+import Auth from './components/Auth.vue';
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBQIzMt7WX15ElNiUUXDKjSAmM5g-qQl-k",
+  authDomain: "chat-c41f5.firebaseapp.com",
+  projectId: "chat-c41f5",
+  storageBucket: "chat-c41f5.appspot.com",
+  messagingSenderId: "503653424889",
+  appId: "1:503653424889:web:6a828486b7b59b2754cc28",
+  measurementId: "G-PESXKQ3L3X"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+provide('db', db);
 provide('state', state);
-
+provide('auth', auth);
 </script>
-
 
 <style>
 *,
@@ -23,8 +41,5 @@ provide('state', state);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-.app {
-  min-height: 100vh;
 }
 </style>
