@@ -12,28 +12,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { ref, inject, onMounted, onUnmounted } from "vue";
 import { istate } from '../store';
-import { addDoc, collection, getDoc, doc } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
 
 const state = inject<istate>('state');
 const db = inject('db');
 const msg = ref('');
 
+const coll = collection(db, 'messages');
+
+onMounted(async () => {
+    state.msgs = [];
+    const q = query(coll, orderBy('date', 'asc'), limit(20));
+    const unsub = onSnapshot(q, (docs) => {
+        state.msgs = [];
+        docs.forEach(doc => {
+            state.msgs.push(doc.data());
+        });
+    });
+});
+
 const send = () => {
+    console.log(Date.now());
+
     if (msg.value != '') {
-        const message = {
+        const message: istate['msgtype'] = {
             id: Math.random(),
-            txt: msg.value,
+            liked: false,
             sender: state.watcher,
-            liked: false
+            txt: msg.value,
+            date: Date.now()
         };
-        const coll =collection(db, 'messages'); 
         addDoc(coll, message);
-        //state.msgs.push(message);// USE GET DATA 
         msg.value = '';
-        const messages = getDoc(doc(db,'messages'));
-        console.log(messages);
     }
 }
 </script>

@@ -8,7 +8,8 @@ const state = reactive({
 
 export interface istate {
     watcher: string,
-    msgs: { id: number, txt: string, sender: string, liked: boolean }[]
+    msgtype?: { id: number, liked: boolean, sender: string, txt: string, date: number }
+    msgs: { id: number, liked: boolean, sender: string, txt: string, date: number }[]
     user: null | {}
 }
 export default state;

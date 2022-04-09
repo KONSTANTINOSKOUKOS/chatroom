@@ -9,18 +9,21 @@
 import { ref, inject } from 'vue';
 import { istate } from '../store';
 
-const state = inject<istate>('state');
-const liked = ref(false);
-const heart = ref('🤍');
-
 interface propss {
     msg: {
         id: number,
+        liked:boolean,
+        sender: string,
         txt: string,
-        sender: string
+        date:number
     }
 }
-defineProps<propss>();
+const props = defineProps<propss>();
+
+const state = inject<istate>('state');
+const liked = ref(props.msg.liked);
+const heart = ref('🤍');
+
 
 const like = () => {
     liked.value = !liked.value;

@@ -6,16 +6,13 @@
 </template>
 
 <script setup>
-import { inject, onMounted } from 'vue'
+import { inject } from 'vue'
 import Message from './Message.vue'
 import Form from './Form.vue'
 
 const state = inject('state');
 const db = inject('db');
 
-onMounted(()=>{
-    
-})
 </script>
 
 
