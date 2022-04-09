@@ -1,6 +1,8 @@
 <template>
-    <div :class="msg.sender == state.watcher ? 'left' : 'right'">
-        <p :class="msg.sender == state.watcher ? 'senders' : 'others'">{{ msg.txt }}</p>
+    <div :class="msg.sender == state.user.uid ? 'left' : 'right'">
+    <img v-if="state.user.photoURL" :src="state.user.photoURL" alt="">
+        <!-- <span>{{state.user.displayName}}</span> -->
+        <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
         <button @click="like()">{{ heart }}</button>
     </div>
 </template>
@@ -12,10 +14,10 @@ import { istate } from '../store';
 interface propss {
     msg: {
         id: number,
-        liked:boolean,
+        liked: boolean,
         sender: string,
         txt: string,
-        date:number
+        date: number
     }
 }
 const props = defineProps<propss>();
@@ -70,5 +72,10 @@ button {
 }
 button:hover {
     filter: brightness(90%);
+}
+img{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
 }
 </style>

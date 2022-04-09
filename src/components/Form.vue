@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, onMounted, onUnmounted } from "vue";
+import { ref, inject, onMounted } from "vue";
 import { istate } from '../store';
 import { addDoc, collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
 
@@ -24,7 +24,7 @@ const coll = collection(db, 'messages');
 
 onMounted(async () => {
     state.msgs = [];
-    const q = query(coll, orderBy('date', 'asc'), limit(20));
+    const q = query(coll, orderBy('date', 'asc'));
     const unsub = onSnapshot(q, (docs) => {
         state.msgs = [];
         docs.forEach(doc => {
@@ -40,7 +40,7 @@ const send = () => {
         const message: istate['msgtype'] = {
             id: Math.random(),
             liked: false,
-            sender: state.watcher,
+            sender: state.user.uid,
             txt: msg.value,
             date: Date.now()
         };
@@ -55,6 +55,10 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: fixed;
+    min-width: 100vw;
+    bottom: 0;
+    position: fixed;
 }
 form input {
     width: 50rem;
@@ -66,10 +70,10 @@ form input {
 }
 button {
     font-size: 1.4rem;
-    margin-left: 1em;
+    margin: .2rem 1em;
     border: 0;
-    padding: 0.4rem;
-    border-radius: 1rem;
+    padding: 0.2rem 0.3rem;
+    border-radius: 2rem;
     background-color: rgb(226, 224, 224);
     color: cornflowerblue;
 }
