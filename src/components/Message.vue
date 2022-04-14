@@ -1,7 +1,8 @@
 <template>
     <div :class="msg.sender == state.user.uid ? 'left' : 'right'">
-    <img v-if="state.user.photoURL" :src="state.user.photoURL" alt="">
+    <img v-if="msg.img" :src="msg.img">
         <!-- <span>{{state.user.displayName}}</span> -->
+        <img :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'" v-else>
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
         <button @click="like()">{{ heart }}</button>
     </div>
@@ -17,7 +18,8 @@ interface propss {
         liked: boolean,
         sender: string,
         txt: string,
-        date: number
+        date: number,
+        img:string
     }
 }
 const props = defineProps<propss>();
@@ -41,7 +43,7 @@ div {
 }
 
 p {
-    font-size: 2em;
+    font-size: 2em; 
     padding: 0.1em 0.5em;
     margin-right: 1rem;
     border-radius: 1em;

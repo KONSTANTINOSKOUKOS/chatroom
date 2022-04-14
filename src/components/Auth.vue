@@ -2,7 +2,6 @@
     <h1>Log in to send messages</h1>
     <button @click="loginwgoogle">Log In With Goggle</button>
     <h2>Or use as a guest</h2>
-    <!-- <button @click="useasguest">Use As Guest</button> -->
 </template>
 
 <script setup>

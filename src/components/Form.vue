@@ -42,7 +42,8 @@ const send = () => {
             liked: false,
             sender: state.user.uid,
             txt: msg.value,
-            date: Date.now()
+            date: Date.now(),
+            img:state.user.photoURL
         };
         addDoc(coll, message);
         msg.value = '';
