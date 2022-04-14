@@ -3,7 +3,8 @@ import { reactive } from 'vue';
 const state = reactive({
     watcher: 'george',
     msgs: [],
-    user: null
+    user: null,
+    scroll: false
 });
 
 export interface istate {
@@ -11,5 +12,6 @@ export interface istate {
     msgtype?: { id: number, liked: boolean, sender: string, txt: string, date: number, img: string }
     msgs: { id: number, liked: boolean, sender: string, txt: string, date: number, img: string }[]
     user: null | {}
+    scroll: boolean
 }
 export default state;

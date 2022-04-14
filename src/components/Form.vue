@@ -1,14 +1,8 @@
 <template>
-    <form @submit.prevent="send">
+    <form @submit.prevent="send(); $emit('dum-ev');">
         <input type="text" v-model="msg" placeholder="send something" />
         <button type="submit">Send</button>
     </form>
-
-    <input type="radio" value="george" v-model="state.watcher" />
-    <label>George</label>
-
-    <input type="radio" value="john" v-model="state.watcher" />
-    <label>John</label>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +28,6 @@ onMounted(async () => {
 });
 
 const send = () => {
-    console.log(Date.now());
 
     if (msg.value != '') {
         const message: istate['msgtype'] = {
@@ -43,10 +36,11 @@ const send = () => {
             sender: state.user.uid,
             txt: msg.value,
             date: Date.now(),
-            img:state.user.photoURL
+            img: state.user.photoURL
         };
         addDoc(coll, message);
         msg.value = '';
+        state.scroll = true;
     }
 }
 </script>
@@ -61,6 +55,7 @@ form {
     bottom: 0;
     position: fixed;
 }
+
 form input {
     width: 50rem;
     height: 1.7rem;
@@ -69,6 +64,7 @@ form input {
     border: 0;
     text-indent: 10px;
 }
+
 button {
     font-size: 1.4rem;
     margin: .2rem 1em;

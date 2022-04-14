@@ -1,8 +1,8 @@
 <template>
-    <div :class="msg.sender == state.user.uid ? 'left' : 'right'">
-    <img v-if="msg.img" :src="msg.img">
+    <div :class="msg.sender == state.user.uid ? 'right' : 'left'">
+        <img v-if="msg.img!=''" :src="msg.img">
         <!-- <span>{{state.user.displayName}}</span> -->
-        <img :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'" v-else>
+        <img v-else :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'">
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
         <button @click="like()">{{ heart }}</button>
     </div>
@@ -19,7 +19,7 @@ interface propss {
         sender: string,
         txt: string,
         date: number,
-        img:string
+        img: string
     }
 }
 const props = defineProps<propss>();
@@ -27,7 +27,6 @@ const props = defineProps<propss>();
 const state = inject<istate>('state');
 const liked = ref(props.msg.liked);
 const heart = ref('🤍');
-
 
 const like = () => {
     liked.value = !liked.value;
@@ -43,24 +42,27 @@ div {
 }
 
 p {
-    font-size: 2em; 
-    padding: 0.1em 0.5em;
+    font-size: 2em;
+    padding: 0 0.5em;
     margin-right: 1rem;
     border-radius: 1em;
     max-width: 10rem;
     overflow-wrap: break-word;
 }
+
 .left p {
-    background-color: rgb(0, 102, 255);
-    color: white;
+    background-color: rgb(183, 183, 183);
 }
+
 .right {
     flex-direction: row-reverse;
     margin-left: 1rem;
 }
+
 .right p {
-    background-color: rgb(255, 0, 0);
+    background-color: rgb(0, 102, 255);
     text-align: center;
+    color: white;
 }
 
 button {
@@ -72,12 +74,17 @@ button {
     height: fit-content;
     margin: 1rem;
 }
+
 button:hover {
     filter: brightness(90%);
 }
-img{
+
+img {
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
+}
+.left img{
+    margin-right: 1rem;
 }
 </style>
