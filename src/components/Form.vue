@@ -1,6 +1,7 @@
 <template>
+    <div ref="dum"></div>
     <form @submit.prevent="send(); $emit('dum-ev');">
-        <input type="text" v-model="msg" placeholder="send something" />
+        <input type="text" v-model="msg" placeholder="send something &#8476;" />
         <button type="submit">Send</button>
     </form>
 </template>
@@ -13,6 +14,7 @@ import { addDoc, collection, onSnapshot, query, orderBy, limit } from "firebase/
 const state = inject<istate>('state');
 const db = inject('db');
 const msg = ref('');
+const dum = ref<null | HTMLDivElement>(null);
 
 const coll = collection(db, 'messages');
 
@@ -40,7 +42,7 @@ const send = () => {
         };
         addDoc(coll, message);
         msg.value = '';
-        state.scroll = true;
+        dum.value.scrollIntoView({ behavior: 'smooth' });
     }
 }
 </script>
