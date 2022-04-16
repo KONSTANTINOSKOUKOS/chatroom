@@ -1,7 +1,7 @@
 <template>
     <div ref="dum"></div>
     <form @submit.prevent="send(); $emit('dum-ev');">
-        <input type="text" v-model="msg" placeholder="send something &#8476;" />
+        <input type="text" v-model="msg" placeholder="send something " />
         <button type="submit">Send</button>
     </form>
 </template>
@@ -30,7 +30,7 @@ onMounted(async () => {
 });
 
 const send = () => {
-
+    
     if (msg.value != '') {
         const message: istate['msgtype'] = {
             id: Math.random(),
@@ -43,6 +43,7 @@ const send = () => {
         addDoc(coll, message);
         msg.value = '';
         dum.value.scrollIntoView({ behavior: 'smooth' });
+        console.log(state.msgs);
     }
 }
 </script>

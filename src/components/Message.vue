@@ -1,18 +1,21 @@
 <template>
     <div :class="msg.sender == state.user.uid ? 'right' : 'left'">
-        <img v-if="msg.img!=''" :src="msg.img">
+        <img v-if="msg.img != ''" :src="msg.img">
         <!-- <span>{{state.user.displayName}}</span> -->
         <img v-else :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'">
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
-        <button @click="like()">{{ heart }}</button>
+        <button @click="like">{{ liked ? '❤️' : '🤍' }}</button>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref, inject, onMounted } from 'vue';
 import { istate } from '../store';
+import { collection, query, setDoc, doc } from 'firebase/firestore'
 
-interface propss {
+const db = inject('db');
+
+interface iprops {
     msg: {
         id: number,
         liked: boolean,
@@ -22,15 +25,21 @@ interface propss {
         img: string
     }
 }
-const props = defineProps<propss>();
+const props = defineProps<iprops>();
 
 const state = inject<istate>('state');
 const liked = ref(props.msg.liked);
-const heart = ref('🤍');
+
+onMounted(() => {
+    const q = query(collection(db, 'messages'));
+
+});
 
 const like = () => {
     liked.value = !liked.value;
-    heart.value = heart.value == '🤍' ? '❤️' : '🤍';
+    setDoc(doc(db, 'messages', `${props.msg.id}`),
+        { liked: !liked.value }
+    );
 }
 </script>
 
@@ -46,7 +55,7 @@ p {
     padding: 0 0.5em;
     margin-right: 1rem;
     border-radius: 1em;
-    max-width: 10rem;
+    max-width: 40%;
     overflow-wrap: break-word;
 }
 
@@ -84,7 +93,8 @@ img {
     height: 3rem;
     border-radius: 50%;
 }
-.left img{
+
+.left img {
     margin-right: 1rem;
 }
 </style>
