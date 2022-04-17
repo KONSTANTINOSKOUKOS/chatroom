@@ -1,15 +1,15 @@
 <template>
-    <div ref="dum"></div>
-    <form @submit.prevent="send(); $emit('dum-ev');">
-        <input type="text" v-model="msg" placeholder="send something " />
+    <form @submit.prevent="send();">
+        <input type="text" v-model="msg" placeholder="send something" />
         <button type="submit">Send</button>
     </form>
+    <div ref="dum"></div>
 </template>
 
 <script setup lang="ts">
 import { ref, inject, onMounted } from "vue";
 import { istate } from '../store';
-import { addDoc, collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
+import { doc, setDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 const state = inject<istate>('state');
 const db = inject('db');
@@ -23,27 +23,28 @@ onMounted(async () => {
     const q = query(coll, orderBy('date', 'asc'));
     const unsub = onSnapshot(q, (docs) => {
         state.msgs = [];
-        docs.forEach(doc => {
+        docs.forEach(doc => {            
             state.msgs.push(doc.data());
         });
     });
 });
 
-const send = () => {
-    
+const send = async () => {
+
     if (msg.value != '') {
+        const date = Date.now();
         const message: istate['msgtype'] = {
             id: Math.random(),
             liked: false,
             sender: state.user.uid,
             txt: msg.value,
-            date: Date.now(),
+            date: date,
             img: state.user.photoURL
         };
-        addDoc(coll, message);
+        await setDoc(doc(db,'messages',date.toString()),message);
+        console.log(date.toString());//docId and date the same
         msg.value = '';
         dum.value.scrollIntoView({ behavior: 'smooth' });
-        console.log(state.msgs);
     }
 }
 </script>

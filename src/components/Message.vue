@@ -1,6 +1,6 @@
 <template>
     <div :class="msg.sender == state.user.uid ? 'right' : 'left'">
-        <img v-if="msg.img != ''" :src="msg.img">
+        <img v-if="pfpimg != ''" :src="pfpimg">
         <!-- <span>{{state.user.displayName}}</span> -->
         <img v-else :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'">
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { ref, inject, onMounted } from 'vue';
 import { istate } from '../store';
-import { collection, query, setDoc, doc } from 'firebase/firestore'
+import { onSnapshot, query, updateDoc, doc } from 'firebase/firestore'
 
 const db = inject('db');
 
@@ -26,20 +26,25 @@ interface iprops {
     }
 }
 const props = defineProps<iprops>();
+const pfpimg = ref(props.msg.img);
 
 const state = inject<istate>('state');
 const liked = ref(props.msg.liked);
 
-onMounted(() => {
-    const q = query(collection(db, 'messages'));
+const docc = doc(db, 'messages', props.msg.date.toString());
 
+onMounted(() => {
+    const unsub = onSnapshot(docc,(doc)=>{
+        console.log(doc.data());
+        liked.value = doc.data().liked;
+    });
 });
 
-const like = () => {
+const like = async () => {
     liked.value = !liked.value;
-    setDoc(doc(db, 'messages', `${props.msg.id}`),
-        { liked: !liked.value }
-    );
+    await updateDoc(docc, {
+        'liked': liked.value
+    });
 }
 </script>
 

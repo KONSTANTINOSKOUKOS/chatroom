@@ -8,11 +8,11 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import state from './store';
+import state from "./store";
 import { provide } from "vue";
 
 import Chat from "./components/Chat.vue";
-import Auth from './components/Auth.vue';
+import Auth from "./components/Auth.vue";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQIzMt7WX15ElNiUUXDKjSAmM5g-qQl-k",
@@ -21,16 +21,16 @@ const firebaseConfig = {
   storageBucket: "chat-c41f5.appspot.com",
   messagingSenderId: "503653424889",
   appId: "1:503653424889:web:6a828486b7b59b2754cc28",
-  measurementId: "G-PESXKQ3L3X"
+  measurementId: "G-PESXKQ3L3X",
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-provide('db', db);
-provide('state', state);
-provide('auth', auth);
+provide("db", db);
+provide("state", state);
+provide("auth", auth);
 </script>
 
 <style>
