@@ -1,8 +1,11 @@
 <template>
-    <form @submit.prevent="send();">
-        <input type="text" v-model="msg" placeholder="send something" />
-        <button type="submit">Send</button>
-    </form>
+    <div class="cont">
+        <button>hi</button>
+        <form @submit.prevent="send();">
+            <input type="text" v-model="msg" placeholder="Πείτε κάτι" />
+            <button type="submit">Send</button>
+        </form>
+    </div>
     <div ref="dum"></div>
 </template>
 
@@ -23,7 +26,7 @@ onMounted(async () => {
     const q = query(coll, orderBy('date', 'asc'));
     const unsub = onSnapshot(q, (docs) => {
         state.msgs = [];
-        docs.forEach(doc => {            
+        docs.forEach(doc => {
             state.msgs.push(doc.data());
         });
     });
@@ -41,8 +44,7 @@ const send = async () => {
             date: date,
             img: state.user.photoURL
         };
-        await setDoc(doc(db,'messages',date.toString()),message);
-        console.log(date.toString());//docId and date the same
+        await setDoc(doc(db, 'messages', date.toString()), message);
         msg.value = '';
         dum.value.scrollIntoView({ behavior: 'smooth' });
     }
@@ -50,12 +52,12 @@ const send = async () => {
 </script>
 
 <style scoped>
-form {
+/* form {
     display: flex;
     align-items: center;
     justify-content: center;
     position: fixed;
-    min-width: 100vw;
+    width: 100%;
     bottom: 0;
     position: fixed;
 }
@@ -69,7 +71,7 @@ form input {
     text-indent: 10px;
 }
 
-button {
+form > button {
     font-size: 1.4rem;
     margin: .2rem 1em;
     border: 0;
@@ -77,5 +79,43 @@ button {
     border-radius: 2rem;
     background-color: rgb(226, 224, 224);
     color: cornflowerblue;
+} */
+
+.cont {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 4vh;
+    display: flex;
+    margin-bottom: 1vh;
+    /* justify-content: center; */
+}
+
+form {
+    justify-content: center;
+    background-color: white;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    margin: 0 auto;
+    align-items: center;
+    min-width: 70%;
+    border-radius: 10rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+input {
+    width: 80%;
+    border: 0;
+    height: 70%;
+    background-color: transparent;
+    outline-width: 0;
+}
+
+button {
+    border: 0;
+    background-color: transparent;
+    color: rgb(0, 102, 255);
+    font-size: 1.2em;
+    margin-right: 0;
 }
 </style>

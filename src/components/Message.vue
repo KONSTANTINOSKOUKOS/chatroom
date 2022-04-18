@@ -34,7 +34,7 @@ const liked = ref(props.msg.liked);
 const docc = doc(db, 'messages', props.msg.date.toString());
 
 onMounted(() => {
-    const unsub = onSnapshot(docc,(doc)=>{
+    const unsub = onSnapshot(docc, (doc) => {
         liked.value = doc.data().liked;
     });
 });
@@ -50,14 +50,13 @@ const like = async () => {
 <style scoped>
 div {
     display: flex;
-    margin: 1rem;
+    margin: .5rem;
     align-items: center;
 }
 
 p {
-    font-size: 2em;
+    font-size: 1.5em;
     padding: 0 0.5em;
-    margin-right: 1rem;
     border-radius: 1em;
     max-width: 40%;
     overflow-wrap: break-word;
@@ -93,12 +92,13 @@ button:hover {
 }
 
 img {
-    width: 3rem;
-    height: 3rem;
+    transform: scale(40%);
     border-radius: 50%;
+    padding: 0;
+    margin-left: 0;
 }
 
 .left img {
-    margin-right: 1rem;
+    margin-right:0;
 }
 </style>

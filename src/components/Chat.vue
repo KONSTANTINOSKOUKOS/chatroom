@@ -2,6 +2,7 @@
   <div class="app">
     <button @click="logout()">Log out</button>
     <Message v-for="msg in state.msgs" :msg="msg" id="msg.id" />
+    <div style="margin-top: 2rem;"></div>
     <Form />
   </div>
 </template>
