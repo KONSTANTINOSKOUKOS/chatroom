@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { ref, inject, onMounted } from 'vue';
 import { istate } from '../store';
-import { onSnapshot, query, updateDoc, doc } from 'firebase/firestore'
+import { onSnapshot, updateDoc, doc } from 'firebase/firestore'
 
 const db = inject('db');
 
@@ -35,7 +35,6 @@ const docc = doc(db, 'messages', props.msg.date.toString());
 
 onMounted(() => {
     const unsub = onSnapshot(docc,(doc)=>{
-        console.log(doc.data());
         liked.value = doc.data().liked;
     });
 });
