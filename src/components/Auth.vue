@@ -37,4 +37,13 @@ const useasguest = async () => {
 </script>
 
 <style scoped>
+button{
+border: 0;
+background-color: blue;
+border-radius:1rem;
+}
+h1{
+align-text: center;
+text-decoration: underline;
+}
 </style>
