@@ -11,9 +11,9 @@
 <script setup lang="ts">
 import { ref, inject, onMounted } from 'vue';
 import { istate } from '../store';
-import { onSnapshot, updateDoc, doc } from 'firebase/firestore'
+import {Firestore, onSnapshot, updateDoc, doc } from 'firebase/firestore'
 
-const db = inject('db');
+const db = inject<Firestore>('db');
 
 interface iprops {
     msg: {
@@ -26,9 +26,10 @@ interface iprops {
     }
 }
 const props = defineProps<iprops>();
+const state = inject<istate>('state');
+
 const pfpimg = ref(props.msg.img);
 
-const state = inject<istate>('state');
 const liked = ref(props.msg.liked);
 
 const docc = doc(db, 'messages', props.msg.date.toString());

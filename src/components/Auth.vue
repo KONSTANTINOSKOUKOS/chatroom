@@ -37,13 +37,17 @@ const useasguest = async () => {
 </script>
 
 <style scoped>
-button{
-border: 0;
-background-color: blue;
-border-radius:1rem;
+button {
+  border: 0;
+  background-color: cyan;
+  border-radius: 1rem;
+  font-size: 2rem;
+  display: flex;
+  justify-items: center;
 }
-h1{
-align-text: center;
-text-decoration: underline;
+
+h1 {
+  text-align: center;
+  text-decoration: underline;
 }
 </style>
