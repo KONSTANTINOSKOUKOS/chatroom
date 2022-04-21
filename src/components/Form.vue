@@ -1,6 +1,6 @@
 <template>
     <div class="cont">
-        <button class="noti" @click="handlenotif" >&#8964;</button>
+        <!-- <button class="noti" @click="handlenotif" >&#8964;</button> -->
         <form @submit.prevent="send();">
             <input type="text" v-model="msg" placeholder="Πείτε κάτι" />
             <button class="submit" type="submit">Send</button>
@@ -38,10 +38,9 @@ onMounted(async () => {
         docs.forEach(doc => {
             state.msgs.push(doc.data());
         });
-        console.log(state.msgs[state.msgs.length].sender);
 
         if (state.msgs[state.msgs.length - 1].sender != auth.currentUser.uid
-            && isInViewport(dum.value.getBoundingClientRect())) {
+            && isInViewport(dum.value)) {
             notif.value = true;
         }
     });
@@ -53,7 +52,7 @@ const send = async () => {
         const date = Date.now();
         const message: istate['msgtype'] = {
             id: Math.random(),
-            liked: false,
+            liked: [],
             sender: state.user.uid,
             txt: msg.value,
             date: date,
@@ -78,6 +77,7 @@ const isInViewport = (element): boolean => {
 
 <style scoped>
 .cont {
+    z-index: 999;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -101,7 +101,7 @@ form {
     border: 1px solid rgba(128, 128, 128, 0.5);
     margin: 0 auto;
     justify-content: space-between;
-    min-width: 60%;
+    min-width: 80%;
     border-radius: 10rem;
     display: flex;
 }
@@ -129,6 +129,4 @@ input {
 .submit:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
-
-
 </style>

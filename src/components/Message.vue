@@ -4,21 +4,22 @@
         <!-- <span>{{state.user.displayName}}</span> -->
         <img v-else :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'">
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
-        <button @click="like">{{ liked ? '❤️' : '🤍' }}</button>
+        <button @click="like">{{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}</button>
+        <span>{{ arrlike.length }}</span>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, inject, onMounted } from 'vue';
 import { istate } from '../store';
-import {Firestore, onSnapshot, updateDoc, doc } from 'firebase/firestore'
+import { Firestore, onSnapshot, updateDoc, doc } from 'firebase/firestore'
 
 const db = inject<Firestore>('db');
 
 interface iprops {
     msg: {
         id: number,
-        liked: boolean,
+        liked: string[],
         sender: string,
         txt: string,
         date: number,
@@ -30,22 +31,32 @@ const state = inject<istate>('state');
 
 const pfpimg = ref(props.msg.img);
 
-const liked = ref(props.msg.liked);
+const arrlike = ref(props.msg.liked);
+const ownliked = ref(false);
 
 const docc = doc(db, 'messages', props.msg.date.toString());
 
 onMounted(() => {
     const unsub = onSnapshot(docc, (doc) => {
-        liked.value = doc.data().liked;
+        arrlike.value = doc.data().liked;
     });
 });
 
 const like = async () => {
-    liked.value = !liked.value;
+    ownliked.value = !ownliked.value;
+
+    let newarr = arrlike.value;
+    if (!newarr.includes(state.user.uid)) {
+        newarr.push(state.user.uid);
+    } else {
+        newarr = newarr.filter(item => item != state.user.uid);
+    }
+
     await updateDoc(docc, {
-        'liked': liked.value
+        'liked': newarr
     });
 }
+
 </script>
 
 <style scoped>
@@ -100,6 +111,6 @@ img {
 }
 
 .left img {
-    margin-right:0;
+    margin-right: 0;
 }
 </style>

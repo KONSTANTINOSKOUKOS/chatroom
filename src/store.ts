@@ -7,8 +7,8 @@ const state = reactive({
 });
 
 export interface istate {
-    msgtype?: { id: number, liked: boolean, sender: string, txt: string, date: number, img: string }
-    msgs: { id: number, liked: boolean, sender: string, txt: string, date: number, img: string }[]
+    msgtype?: { id: number, liked: string[], sender: string, txt: string, date: number, img: string }
+    msgs: { id: number, liked: string[], sender: string, txt: string, date: number, img: string }[]
     user: User
 }
 export default state;
