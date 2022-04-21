@@ -25,12 +25,16 @@ const coll = collection(db, 'messages');
 
 const notif = ref(true);
 
+const scroll = () => {
+    dum.value.scrollIntoView({ behavior: 'smooth' });
+}
 const handlenotif = () => {
     notif.value = false;
-    dum.value.scrollIntoView({ behavior: 'smooth' });
+    scroll();
 }
 
 onMounted(async () => {
+    scroll();
     state.msgs = [];
     const q = query(coll, orderBy('date', 'asc'));
     const unsub = onSnapshot(q, (docs) => {
@@ -60,7 +64,7 @@ const send = async () => {
         };
         await setDoc(doc(db, 'messages', date.toString()), message);
         msg.value = '';
-        dum.value.scrollIntoView({ behavior: 'smooth' });
+        scroll();
     }
 }
 

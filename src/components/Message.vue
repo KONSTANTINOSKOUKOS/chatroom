@@ -5,7 +5,7 @@
         <img v-else :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'">
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
         <button @click="like">{{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}</button>
-        <span>{{ arrlike.length }}</span>
+        <span style="color: white;">{{ arrlike.length ==0 ? '' : arrlike.length }}</span>
     </div>
 </template>
 
@@ -39,6 +39,7 @@ const docc = doc(db, 'messages', props.msg.date.toString());
 onMounted(() => {
     const unsub = onSnapshot(docc, (doc) => {
         arrlike.value = doc.data().liked;
+        ownliked.value=arrlike.value.includes(state.user.uid);
     });
 });
 
@@ -71,7 +72,7 @@ p {
     padding: 0 0.5em;
     border-radius: 1em;
     max-width: 40%;
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
 }
 
 .left p {

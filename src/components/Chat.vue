@@ -30,7 +30,7 @@ const logout = () => {
 .app {
   min-height: 100vh;
   scroll-behavior: smooth;
-  margin-top: 10%;
+  margin-top: 3rem;
 }
 nav{
   display: flex;

@@ -1,7 +1,6 @@
 <template>
-  <h1>Log in to send messages</h1>
-  <button @click="loginwgoogle">Log In With Goggle</button>
-  <h2>Or use as a guest</h2>
+  <h1 style="color: white;">Log in to send messages</h1>
+  <button @click="loginwgoogle">Log In With Google</button>
 </template>
 
 <script setup>
