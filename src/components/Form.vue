@@ -1,6 +1,11 @@
 <template>
     <div class="cont">
-        <!-- <button class="noti" @click="handlenotif" >&#8964;</button> -->
+        <div class="noti" v-if="notif">
+            <button @click="handlenotif">
+                <img :src="state.msgs[state.msgs.length - 1].img">
+            </button>
+            <span>&#8964;</span>
+        </div>
         <form @submit.prevent="send();">
             <input type="text" v-model="msg" placeholder="Πείτε κάτι" />
             <button class="submit" type="submit">Send</button>
@@ -13,17 +18,15 @@
 import { ref, inject, onMounted } from "vue";
 import { istate } from '../store';
 import { doc, setDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import { Auth } from "firebase/auth";
 
 const state = inject<istate>('state');
 const db = inject('db');
-const auth = inject<Auth>('auth');
 const msg = ref('');
 const dum = ref<null | HTMLDivElement>(null);
 
 const coll = collection(db, 'messages');
 
-const notif = ref(true);
+const notif = ref(false);
 
 const scroll = () => {
     dum.value.scrollIntoView({ behavior: 'smooth' });
@@ -43,8 +46,10 @@ onMounted(async () => {
             state.msgs.push(doc.data());
         });
 
-        if (state.msgs[state.msgs.length - 1].sender != auth.currentUser.uid
-            && isInViewport(dum.value)) {
+        console.log(state.msgs[state.msgs.length - 1]);
+
+        if (state.msgs[state.msgs.length - 1].sender != state.user.uid
+            && !isInViewport(dum.value)) {
             notif.value = true;
         }
     });
@@ -68,7 +73,7 @@ const send = async () => {
     }
 }
 
-const isInViewport = (element): boolean => {
+const isInViewport = (element: HTMLElement): boolean => {
     const rect = element.getBoundingClientRect();
     return (
         rect.top >= 0 &&
@@ -94,10 +99,38 @@ const isInViewport = (element): boolean => {
 }
 
 .noti {
-    font-size: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* font-size: 3rem;
     border: 0;
-    padding: .1rem;
     background-color: rgb(220, 220, 220);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: .4rem; */
+}
+
+.noti button {
+    border: 0;
+    border-radius: 50%;
+    padding: .3rem;
+    background-color: rgb(220, 220, 220);
+    align-items: center;
+}
+
+.noti img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+.noti span{
+    line-height: normal;
+    font-size: 3rem;
+    padding: 0;
+    
 }
 
 form {

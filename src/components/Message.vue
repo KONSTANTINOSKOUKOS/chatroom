@@ -1,11 +1,10 @@
 <template>
-    <div :class="msg.sender == state.user.uid ? 'right' : 'left'">
-        <img v-if="pfpimg != ''" :src="pfpimg">
+    <div :class="ismine() ? 'right' : 'left'">
+        <img v-if="pfpimg != '' && ismine() != true" :src="pfpimg">
         <!-- <span>{{state.user.displayName}}</span> -->
-        <img v-else :src="'https://icon-library.com/images/generic-user-icon/generic-user-icon-12.jpg'">
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
         <button @click="like">{{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}</button>
-        <span style="color: white;">{{ arrlike.length ==0 ? '' : arrlike.length }}</span>
+        <span>{{ arrlike.length == 0 ? '' : arrlike.length }}</span>
     </div>
 </template>
 
@@ -39,7 +38,7 @@ const docc = doc(db, 'messages', props.msg.date.toString());
 onMounted(() => {
     const unsub = onSnapshot(docc, (doc) => {
         arrlike.value = doc.data().liked;
-        ownliked.value=arrlike.value.includes(state.user.uid);
+        ownliked.value = arrlike.value.indexOf(state.user.uid) != -1;
     });
 });
 
@@ -58,21 +57,32 @@ const like = async () => {
     });
 }
 
+const ismine = () => {
+    return props.msg.sender == state.user.uid;
+}
 </script>
 
 <style scoped>
 div {
     display: flex;
-    margin: .5rem;
     align-items: center;
+    margin: 1.5rem 0;
 }
 
 p {
-    font-size: 1.5em;
-    padding: 0 0.5em;
+    font-size: 18px;
+    font-weight: 400;
+    padding: .5vh .7rem;
     border-radius: 1em;
-    max-width: 40%;
+    max-width: 45vw;
     overflow-wrap: normal;
+    margin: 0 2.5vw;
+}
+
+@media screen and (min-width: 600px) {
+    p {
+        font-size: 1.7em;
+    }
 }
 
 .left p {
@@ -86,8 +96,8 @@ p {
 
 .right p {
     background-color: rgb(0, 102, 255);
-    text-align: center;
     color: white;
+    margin-right: 2vw;
 }
 
 button {
@@ -97,7 +107,6 @@ button {
     border-radius: 50%;
     padding: 0.5rem;
     height: fit-content;
-    margin: 1rem;
 }
 
 button:hover {
@@ -105,13 +114,8 @@ button:hover {
 }
 
 img {
-    transform: scale(40%);
+    width: 2rem;
     border-radius: 50%;
     padding: 0;
-    margin-left: 0;
-}
-
-.left img {
-    margin-right: 0;
 }
 </style>
