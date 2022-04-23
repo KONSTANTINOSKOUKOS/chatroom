@@ -74,8 +74,8 @@ p {
     font-weight: 400;
     padding: .5vh .7rem;
     border-radius: 1em;
-    max-width: 45vw;
-    overflow-wrap: normal;
+    max-width: 40%;
+    overflow-wrap: break-word;
     margin: 0 2.5vw;
 }
 
@@ -117,5 +117,8 @@ img {
     width: 2rem;
     border-radius: 50%;
     padding: 0;
+}
+span{
+    margin: 0 .5em;
 }
 </style>

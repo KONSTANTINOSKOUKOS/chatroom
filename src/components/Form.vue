@@ -7,6 +7,7 @@
             <span>&#8964;</span>
         </div>
         <form @submit.prevent="send();">
+            <!-- <textarea v-model="msg" placeholder="Πείτε κάτι" cols="30" rows="10"></textarea> -->
             <input type="text" v-model="msg" placeholder="Πείτε κάτι" />
             <button class="submit" type="submit">Send</button>
         </form>
@@ -17,10 +18,10 @@
 <script setup lang="ts">
 import { ref, inject, onMounted } from "vue";
 import { istate } from '../store';
-import { doc, setDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import { Firestore, doc, setDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 const state = inject<istate>('state');
-const db = inject('db');
+const db = inject<Firestore>('db');
 const msg = ref('');
 const dum = ref<null | HTMLDivElement>(null);
 
@@ -45,8 +46,6 @@ onMounted(async () => {
         docs.forEach(doc => {
             state.msgs.push(doc.data());
         });
-
-        console.log(state.msgs[state.msgs.length - 1]);
 
         if (state.msgs[state.msgs.length - 1].sender != state.user.uid
             && !isInViewport(dum.value)) {
@@ -82,6 +81,12 @@ const isInViewport = (element: HTMLElement): boolean => {
         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
 }
+
+// document.addEventListener('scroll', () => {
+//     if (notif.value && isInViewport(dum.value)) {
+//         notif.value = false;
+//     }
+// })
 </script>
 
 <style scoped>
@@ -103,13 +108,6 @@ const isInViewport = (element: HTMLElement): boolean => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* font-size: 3rem;
-    border: 0;
-    background-color: rgb(220, 220, 220);
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    padding: .4rem; */
 }
 
 .noti button {
@@ -126,11 +124,10 @@ const isInViewport = (element: HTMLElement): boolean => {
     border-radius: 50%;
 }
 
-.noti span{
+.noti span {
     line-height: normal;
     font-size: 3rem;
     padding: 0;
-    
 }
 
 form {
@@ -138,9 +135,24 @@ form {
     border: 1px solid rgba(128, 128, 128, 0.5);
     margin: 0 auto;
     justify-content: space-between;
+    align-items: center;
     min-width: 80%;
     border-radius: 10rem;
     display: flex;
+    max-height: 3rem;
+}
+
+textarea {
+    width: 80%;
+    border: 0;
+    /* height: 70%; */
+    background-color: transparent;
+    outline-width: 0;
+    margin-left: 1rem;
+    overflow: auto;
+    overflow-wrap: break-word;
+    resize: none;
+    height: 2.5em;
 }
 
 input {
@@ -149,16 +161,16 @@ input {
     /* height: 70%; */
     background-color: transparent;
     outline-width: 0;
-    text-indent: 1rem;
-    overflow: hidden;
+    margin-left: 1rem;
+    overflow-wrap: break-word;
     resize: none;
-    height: 2.5em;
+    min-height: 2.5em;
 }
 
 .submit {
     border: 0;
     background-color: transparent;
-    color: rgb(0, 102, 255);
+    color: rgb(0, 149, 246);
     font-size: 1.1em;
     margin-right: 2%;
 }

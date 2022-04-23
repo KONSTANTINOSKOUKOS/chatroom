@@ -1,6 +1,6 @@
 <template>
   <h1>Log in to send messages</h1>
-  <button @click="loginwgoogle">Log In With Google</button>
+  <button @click="loginwgoogle" style="margin: 1rem auto;"> Log In With Google</button>
 </template>
 
 <script setup>
