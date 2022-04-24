@@ -64,7 +64,8 @@ const send = async () => {
             sender: state.user.uid,
             txt: msg.value,
             date: date,
-            img: state.user.photoURL
+            img: state.user.photoURL,
+            name: state.user.displayName
         };
         await setDoc(doc(db, 'messages', date.toString()), message);
         msg.value = '';

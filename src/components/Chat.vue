@@ -2,9 +2,9 @@
   <div class="app">
     <nav>
       <button @click="logout()">Log out</button>
-      <img :src="state.user.photoURL" alt="">
+      <img :src="state.user.photoURL">
     </nav>
-    <Message v-for="msg in state.msgs" :msg="msg" id="msg.id" />
+    <Message v-for="msg in state.msgs" :msg="msg" :key="msg.id" />
     <div style="margin-top: 2rem;"></div>
     <Form />
   </div>
@@ -12,11 +12,12 @@
 
 <script lang="ts" setup>
 import { ref, inject } from "vue";
+import { istate } from "../store";
 import Message from "./Message.vue";
 import Form from "./Form.vue";
 import { signOut } from "firebase/auth";
 
-const state = inject("state");
+const state: istate = inject("state");
 const auth = inject("auth");
 
 const logout = () => {

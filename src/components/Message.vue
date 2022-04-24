@@ -1,7 +1,7 @@
 <template>
+    <span v-if="!ismine()" :class="ismine() ? 'right' : 'left'" class="name">{{ msg.name }}</span>
     <div :class="ismine() ? 'right' : 'left'">
         <img v-if="pfpimg != '' && ismine() != true" :src="pfpimg">
-        <!-- <span>{{state.user.displayName}}</span> -->
         <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
         <button @click="like">{{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}</button>
         <span>{{ arrlike.length == 0 ? '' : arrlike.length }}</span>
@@ -22,7 +22,8 @@ interface iprops {
         sender: string,
         txt: string,
         date: number,
-        img: string
+        img: string,
+        name:string
     }
 }
 const props = defineProps<iprops>();
@@ -36,6 +37,8 @@ const ownliked = ref(false);
 const docc = doc(db, 'messages', props.msg.date.toString());
 
 onMounted(() => {
+    console.log(props.msg.name);
+    
     const unsub = onSnapshot(docc, (doc) => {
         arrlike.value = doc.data().liked;
         ownliked.value = arrlike.value.indexOf(state.user.uid) != -1;
@@ -66,7 +69,8 @@ const ismine = () => {
 div {
     display: flex;
     align-items: center;
-    margin: 1.5rem 0;
+    margin: 0 0 1.5rem 0;
+
 }
 
 p {
@@ -118,7 +122,14 @@ img {
     border-radius: 50%;
     padding: 0;
 }
-span{
+
+span {
     margin: 0 .5em;
+}
+
+.name {
+    display: flex;
+    max-width: fit-content;
+    margin-left: 3rem;
 }
 </style>
