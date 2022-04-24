@@ -1,11 +1,11 @@
 <template>
     <div class="cont">
-        <div class="noti" v-if="notif">
+        <!-- <div class="noti" v-if="notif">
             <button @click="handlenotif">
                 <img :src="state.msgs[state.msgs.length - 1].img">
             </button>
             <span>&#8964;</span>
-        </div>
+        </div> -->
         <form @submit.prevent="send();">
             <!-- <textarea v-model="msg" placeholder="Πείτε κάτι" cols="30" rows="10"></textarea> -->
             <input type="text" v-model="msg" placeholder="Πείτε κάτι" />
@@ -171,7 +171,7 @@ input {
 .submit {
     border: 0;
     background-color: transparent;
-    color: rgb(0, 149, 246);
+    color: rgb(0, 153, 255);
     font-size: 1.1em;
     margin-right: 2%;
 }

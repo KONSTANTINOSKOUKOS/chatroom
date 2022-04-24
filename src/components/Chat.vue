@@ -31,7 +31,7 @@ const logout = () => {
 .app {
   min-height: 100vh;
   scroll-behavior: smooth;
-  margin: 3.5rem 0;
+  margin: 10vh 0;
 }
 
 nav {
@@ -43,7 +43,7 @@ nav {
   min-height: 10%;
   top: 0;
   z-index: 999;
-  background-color: blanchedalmond;
+  background-color: rgb(130, 143, 152);
 }
 
 nav img {

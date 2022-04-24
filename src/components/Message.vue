@@ -2,9 +2,10 @@
     <span v-if="!ismine()" :class="ismine() ? 'right' : 'left'" class="name">{{ msg.name }}</span>
     <div :class="ismine() ? 'right' : 'left'">
         <img v-if="pfpimg != '' && ismine() != true" :src="pfpimg">
-        <p :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
-        <button @click="like">{{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}</button>
-        <span>{{ arrlike.length == 0 ? '' : arrlike.length }}</span>
+        <p @dblclick="like" :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
+        <button @click="like"> {{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}{{ arrlike.length == 0 ? '' : arrlike.length }}</button>
+        <!-- <button @click="like">{{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}</button>
+        <span>{{ arrlike.length == 0 ? '' : arrlike.length }}</span> -->
     </div>
 </template>
 
@@ -23,7 +24,7 @@ interface iprops {
         txt: string,
         date: number,
         img: string,
-        name:string
+        name: string
     }
 }
 const props = defineProps<iprops>();
@@ -37,8 +38,6 @@ const ownliked = ref(false);
 const docc = doc(db, 'messages', props.msg.date.toString());
 
 onMounted(() => {
-    console.log(props.msg.name);
-    
     const unsub = onSnapshot(docc, (doc) => {
         arrlike.value = doc.data().liked;
         ownliked.value = arrlike.value.indexOf(state.user.uid) != -1;
@@ -80,7 +79,7 @@ p {
     border-radius: 1em;
     max-width: 40%;
     overflow-wrap: break-word;
-    margin: 0 2.5vw;
+    margin: 0;
 }
 
 @media screen and (min-width: 600px) {
@@ -90,7 +89,8 @@ p {
 }
 
 .left p {
-    background-color: rgb(183, 183, 183);
+    background-color: rgb(184, 184, 184);
+    margin-left: 2.5vw;
 }
 
 .right {
@@ -108,8 +108,10 @@ button {
     font-size: 1rem;
     border: 0;
     background-color: rgb(226, 224, 224);
-    border-radius: 50%;
-    padding: 0.5rem;
+    border-radius: 2em;
+    padding: .25em;
+    /* padding: 0.5rem; */
+    margin-top: auto;
     height: fit-content;
 }
 
@@ -130,6 +132,6 @@ span {
 .name {
     display: flex;
     max-width: fit-content;
-    margin-left: 3rem;
+    margin-left: calc(2rem + 2.5vw);
 }
 </style>
