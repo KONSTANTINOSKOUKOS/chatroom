@@ -3,20 +3,29 @@
     <h1>CHATROOM</h1>
     <h2>Log in to send messages</h2>
   </nav>
-  <button @click="loginwgoogle" style="margin: 1rem auto;"> Log In With Google</button>
+  <button @click="loginwgoogle"> Log In With Google</button>
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject, onMounted } from "vue";
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  signInAnonymously,
-  onAuthStateChanged,
+  setPersistence,
+  browserSessionPersistence,
+  onAuthStateChanged
 } from "firebase/auth";
 import state from "../store";
 
 const auth = inject("auth");
+
+onMounted(() => {
+  setPersistence(auth, browserSessionPersistence)
+
+  const unsub = onAuthStateChanged(auth, (user) => {
+    state.user = user ? user : null;
+  });
+});
 
 const loginwgoogle = async () => {
   const provider = new GoogleAuthProvider();
@@ -26,26 +35,18 @@ const loginwgoogle = async () => {
   });
 };
 
-const useasguest = async () => {
-  await signInAnonymously(auth).then(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user);
-        state.user = user;
-      }
-    });
-  });
-};
 </script>
 
 <style scoped>
-nav{
+nav {
   width: 100vw;
   /* min-height: 10vh; */
   background-color: rgb(130, 143, 152);
 }
+
 button {
   border: 0;
+  margin: 1rem auto;
   background-color: rgb(184, 184, 184);
   border-radius: 1rem;
   font-size: 2rem;
@@ -63,9 +64,10 @@ h1 {
   font-size: 3em;
   text-align: center;
   padding-bottom: .1rem;
-  color:black;
+  color: black;
 }
-h2{
+
+h2 {
   font-size: 2em;
   text-align: center;
   color: black;

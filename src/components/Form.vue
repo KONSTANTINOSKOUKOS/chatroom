@@ -38,7 +38,7 @@ const handlenotif = () => {
 }
 
 onMounted(async () => {
-    scroll();
+    // scroll();
     state.msgs = [];
     const q = query(coll, orderBy('date', 'asc'));
     const unsub = onSnapshot(q, (docs) => {

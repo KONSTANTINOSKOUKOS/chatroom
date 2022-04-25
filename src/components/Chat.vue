@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="applic">
     <nav>
       <button @click="logout()">Log out</button>
       <img :src="state.user.photoURL">
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject } from "vue";
+import { inject } from "vue";
 import { istate } from "../store";
 import Message from "./Message.vue";
 import Form from "./Form.vue";
@@ -28,7 +28,7 @@ const logout = () => {
 </script>
 
 <style scoped>
-.app {
+.applic {
   min-height: 100vh;
   scroll-behavior: smooth;
   margin: 10vh 0;

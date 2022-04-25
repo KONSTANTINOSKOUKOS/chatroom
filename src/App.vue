@@ -2,6 +2,7 @@
   <Auth v-if="!state.user" />
 
   <Chat v-else />
+  <!-- <Home v-else /> -->
 </template>
 <script setup lang="ts">
 import { initializeApp } from "firebase/app";
@@ -13,6 +14,7 @@ import { provide } from "vue";
 
 import Chat from "./components/Chat.vue";
 import Auth from "./components/Auth.vue";
+import Home from './components/Home.vue';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQIzMt7WX15ElNiUUXDKjSAmM5g-qQl-k",
