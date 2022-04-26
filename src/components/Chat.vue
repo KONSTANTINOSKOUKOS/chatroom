@@ -1,9 +1,6 @@
 <template>
   <div class="applic">
-    <nav>
-      <button @click="logout()">Log out</button>
-      <img :src="state.user.photoURL">
-    </nav>
+    <Nav/>
     <Message v-for="msg in state.msgs" :msg="msg" :key="msg.id" />
     <div style="margin-top: 2rem;"></div>
     <Form />
@@ -13,18 +10,12 @@
 <script lang="ts" setup>
 import { inject } from "vue";
 import { istate } from "../store";
+import Nav from "./Nav.vue";
 import Message from "./Message.vue";
 import Form from "./Form.vue";
-import { signOut } from "firebase/auth";
 
 const state: istate = inject("state");
-const auth = inject("auth");
 
-const logout = () => {
-  signOut(auth).then(() => {
-    state.user = null;
-  });
-};
 </script>
 
 <style scoped>
@@ -32,34 +23,5 @@ const logout = () => {
   min-height: 100vh;
   scroll-behavior: smooth;
   margin: 10vh 0;
-}
-
-nav {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  position: fixed;
-  width: 100%;
-  min-height: 10%;
-  top: 0;
-  z-index: 999;
-  background-color: rgb(130, 143, 152);
-}
-
-nav img {
-  width: 2.5rem;
-  height: 2.5rem;
-  margin: .1rem 1rem;
-  border-radius: 50%;
-}
-
-nav button {
-  margin: auto 0;
-  font-size: 1.1em;
-  background-color: aqua;
-  border: 0;
-  border: .15em solid black;
-  padding: .3rem;
-  border-radius: 10rem;
 }
 </style>

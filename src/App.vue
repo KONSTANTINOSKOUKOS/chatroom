@@ -1,8 +1,8 @@
 <template>
   <Auth v-if="!state.user" />
 
-  <Chat v-else />
-  <!-- <Home v-else /> -->
+  <!-- <Chat v-else /> -->
+  <Home v-else />
 </template>
 <script setup lang="ts">
 import { initializeApp } from "firebase/app";
