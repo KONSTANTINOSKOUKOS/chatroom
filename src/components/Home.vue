@@ -7,13 +7,12 @@
             <p>{{ state.msgs[1].txt }}</p>
         </div>
     </div>
+    <button>+</button>
 </template>
 
 <script setup lang="ts">
 import state from '../store';
 import Nav from "./Nav.vue";
-
-console.log(state);
 
 </script>
 

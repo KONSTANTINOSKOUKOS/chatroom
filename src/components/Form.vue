@@ -1,12 +1,6 @@
 <template>
     <div class="cont">
-        <!-- <div class="noti" v-if="notif">
-            <button @click="handlenotif">
-                <img :src="state.msgs[state.msgs.length - 1].img">
-            </button>
-            <span>&#8964;</span>
-        </div> -->
-        <form @submit.prevent="send();">
+        <form @submit.prevent="sendd();">
             <!-- <textarea v-model="msg" placeholder="Πείτε κάτι" cols="30" rows="10"></textarea> -->
             <input type="text" v-model="msg" placeholder="Πείτε κάτι" />
             <button class="submit" type="submit">Send</button>
@@ -17,77 +11,28 @@
 
 <script setup lang="ts">
 import { ref, inject, onMounted } from "vue";
-import { istate } from '../store';
-import { Firestore, doc, setDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import { send, getmsgs } from '../firebase';
+import { Firestore, collection } from "firebase/firestore";
 
-const state = inject<istate>('state');
 const db = inject<Firestore>('db');
 const msg = ref('');
 const dum = ref<null | HTMLDivElement>(null);
 
 const coll = collection(db, 'messages');
 
-const notif = ref(false);
-
 const scroll = () => {
     dum.value.scrollIntoView({ behavior: 'smooth' });
 }
-const handlenotif = () => {
-    notif.value = false;
-    scroll();
-}
 
 onMounted(async () => {
-    // scroll();
-    state.msgs = [];
-    const q = query(coll, orderBy('date', 'asc'));
-    const unsub = onSnapshot(q, (docs) => {
-        state.msgs = [];
-        docs.forEach(doc => {
-            state.msgs.push(doc.data());
-        });
-
-        if (state.msgs[state.msgs.length - 1].sender != state.user.uid
-            && !isInViewport(dum.value)) {
-            notif.value = true;
-        }
-    });
+    scroll();
+    getmsgs(coll);
 });
 
-const send = async () => {
-
-    if (msg.value != '') {
-        const date = Date.now();
-        const message: istate['msgtype'] = {
-            id: Math.random(),
-            liked: [],
-            sender: state.user.uid,
-            txt: msg.value,
-            date: date,
-            img: state.user.photoURL,
-            name: state.user.displayName
-        };
-        await setDoc(doc(db, 'messages', date.toString()), message);
-        msg.value = '';
-        scroll();
-    }
+const sendd = async () => {
+    send(msg, db);
+    scroll();
 }
-
-const isInViewport = (element: HTMLElement): boolean => {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
-
-// document.addEventListener('scroll', () => {
-//     if (notif.value && isInViewport(dum.value)) {
-//         notif.value = false;
-//     }
-// })
 </script>
 
 <style scoped>
@@ -102,33 +47,6 @@ const isInViewport = (element: HTMLElement): boolean => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-}
-
-.noti {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.noti button {
-    border: 0;
-    border-radius: 50%;
-    padding: .3rem;
-    background-color: rgb(220, 220, 220);
-    align-items: center;
-}
-
-.noti img {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-}
-
-.noti span {
-    line-height: normal;
-    font-size: 3rem;
-    padding: 0;
 }
 
 form {

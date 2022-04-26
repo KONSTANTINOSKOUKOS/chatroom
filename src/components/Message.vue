@@ -2,8 +2,12 @@
     <span v-if="!ismine()" :class="ismine() ? 'right' : 'left'" class="name">{{ msg.name }}</span>
     <div :class="ismine() ? 'right' : 'left'">
         <img v-if="pfpimg != '' && ismine() != true" :src="pfpimg">
-        <p @dblclick="like" :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{ msg.txt }}</p>
-        <button @click="like"> {{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}{{ arrlike.length == 0 ? '' : arrlike.length }}</button>
+        <p @dblclick="likee()" :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{
+                msg.txt
+        }}</p>
+        <button @click="likee()"> {{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}{{ arrlike.length == 0 ? '' :
+                arrlike.length
+        }}</button>
         <!-- <button @click="like">{{ ownliked ? '&#10084;&#65039;' : '&#129293;' }}</button>
         <span>{{ arrlike.length == 0 ? '' : arrlike.length }}</span> -->
     </div>
@@ -12,7 +16,8 @@
 <script setup lang="ts">
 import { ref, inject, onMounted } from 'vue';
 import { istate } from '../store';
-import { Firestore, onSnapshot, updateDoc, doc } from 'firebase/firestore'
+import { Firestore, doc } from 'firebase/firestore';
+import { getlikes, like } from '../firebase';
 
 const db = inject<Firestore>('db');
 
@@ -38,25 +43,11 @@ const ownliked = ref(false);
 const docc = doc(db, 'messages', props.msg.date.toString());
 
 onMounted(() => {
-    const unsub = onSnapshot(docc, (doc) => {
-        arrlike.value = doc.data().liked;
-        ownliked.value = arrlike.value.indexOf(state.user.uid) != -1;
-    });
+    getlikes(docc,ownliked,arrlike);
 });
 
-const like = async () => {
-    ownliked.value = !ownliked.value;
-
-    let newarr = arrlike.value;
-    if (!newarr.includes(state.user.uid)) {
-        newarr.push(state.user.uid);
-    } else {
-        newarr = newarr.filter(item => item != state.user.uid);
-    }
-
-    await updateDoc(docc, {
-        'liked': newarr
-    });
+const likee = async () => {
+    like(docc, ownliked, arrlike);
 }
 
 const ismine = () => {
@@ -123,10 +114,6 @@ img {
     width: 2rem;
     border-radius: 50%;
     padding: 0;
-}
-
-span {
-    margin: 0 .5em;
 }
 
 .name {

@@ -1,5 +1,0 @@
-const getmsgs = () => {
-
-}
-
-export 

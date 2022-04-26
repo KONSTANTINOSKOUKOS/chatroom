@@ -20,7 +20,9 @@ import state from "../store";
 const auth = inject("auth");
 
 onMounted(() => {
-  setPersistence(auth, browserSessionPersistence)
+  setPersistence(auth, browserSessionPersistence);
+
+
 
   const unsub = onAuthStateChanged(auth, (user) => {
     state.user = user ? user : null;
