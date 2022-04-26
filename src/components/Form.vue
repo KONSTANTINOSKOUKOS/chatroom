@@ -10,15 +10,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { send, getmsgs } from '../firebase';
-import { Firestore, collection } from "firebase/firestore";
 
-const db = inject<Firestore>('db');
 const msg = ref('');
 const dum = ref<null | HTMLDivElement>(null);
-
-const coll = collection(db, 'messages');
 
 const scroll = () => {
     dum.value.scrollIntoView({ behavior: 'smooth' });
@@ -26,11 +22,11 @@ const scroll = () => {
 
 onMounted(async () => {
     scroll();
-    getmsgs(coll);
+    getmsgs();
 });
 
 const sendd = async () => {
-    send(msg, db);
+    send(msg);
     scroll();
 }
 </script>

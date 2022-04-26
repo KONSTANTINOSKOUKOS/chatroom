@@ -1,10 +1,37 @@
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 import state from './store';
 import { istate } from './store';
 import { Ref } from 'vue';
-import { Firestore, doc, setDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 
+import { Firestore, collection, doc, setDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+import {
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    setPersistence,
+    browserSessionPersistence,
+    onAuthStateChanged
+} from "firebase/auth";
 
-export function getmsgs(coll: any) {
+const firebaseConfig = {
+    apiKey: "AIzaSyBQIzMt7WX15ElNiUUXDKjSAmM5g-qQl-k",
+    authDomain: "chat-c41f5.firebaseapp.com",
+    projectId: "chat-c41f5",
+    storageBucket: "chat-c41f5.appspot.com",
+    messagingSenderId: "503653424889",
+    appId: "1:503653424889:web:6a828486b7b59b2754cc28",
+    measurementId: "G-PESXKQ3L3X",
+};
+
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+
+export function getmsgs() {
+    const coll = collection(db, 'messages');
     state.msgs = [];
     const q = query(coll, orderBy('date', 'asc'));
     const unsub = onSnapshot(q, (docs) => {
@@ -15,8 +42,7 @@ export function getmsgs(coll: any) {
     });
 };
 
-
-export async function send(txt: Ref<string>, db: Firestore) {
+export async function send(txt: Ref<string>) {
     if (txt.value != '') {
         const date = Date.now();
         const message: istate['msgtype'] = {
@@ -55,5 +81,24 @@ export function getlikes(docc: any, ownliked: Ref<boolean>, arrlike: Ref<string[
     });
 };
 
-// export default getmsgs;
-// export default send;
+export function persistuser() {
+    setPersistence(auth, browserSessionPersistence);
+
+    const unsub = onAuthStateChanged(auth, (user) => {
+        state.user = user ? user : null;
+    });
+};
+
+export async function loginwgoogle() {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider).then((res) => {
+        state.user = res.user;
+        console.log(state.user);
+    });
+};
+
+export function logout() {
+    signOut(auth).then(() => {
+        state.user = null;
+    });
+};

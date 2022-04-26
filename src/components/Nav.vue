@@ -7,16 +7,8 @@
 
 <script lang="ts" setup>
 import state from '../store';
-import { inject } from 'vue';
-import { signOut } from '@firebase/auth';
+import { logout } from "../firebase";
 
-const auth = inject('auth');
-
-const logout = () => {
-    signOut(auth).then(() => {
-        state.user = null;
-    });
-};
 </script>
 
 <style scoped>

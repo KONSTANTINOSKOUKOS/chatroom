@@ -1,5 +1,5 @@
 <template>
-  <div class="applic">
+  <div class="superchat">
     <Nav/>
     <Message v-for="msg in state.msgs" :msg="msg" :key="msg.id" />
     <div style="margin-top: 2rem;"></div>
@@ -19,7 +19,7 @@ const state: istate = inject("state");
 </script>
 
 <style scoped>
-.applic {
+.superchat {
   min-height: 100vh;
   scroll-behavior: smooth;
   margin: 10vh 0;

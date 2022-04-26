@@ -3,39 +3,16 @@
     <h1>CHATROOM</h1>
     <h2>Log in to send messages</h2>
   </nav>
-  <button @click="loginwgoogle"> Log In With Google</button>
+  <button @click="loginwgoogle()"> Log In With Google</button>
 </template>
 
 <script setup>
-import { inject, onMounted } from "vue";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  setPersistence,
-  browserSessionPersistence,
-  onAuthStateChanged
-} from "firebase/auth";
-import state from "../store";
-
-const auth = inject("auth");
+import { onMounted } from "vue";
+import { persistuser, loginwgoogle } from "../firebase";
 
 onMounted(() => {
-  setPersistence(auth, browserSessionPersistence);
-
-
-
-  const unsub = onAuthStateChanged(auth, (user) => {
-    state.user = user ? user : null;
-  });
+  persistuser();
 });
-
-const loginwgoogle = async () => {
-  const provider = new GoogleAuthProvider();
-  await signInWithPopup(auth, provider).then((res) => {
-    state.user = res.user;
-    console.log(state.user);
-  });
-};
 
 </script>
 

@@ -4,15 +4,21 @@
         <div class="chat">
             <img :src="state.user.photoURL">
             <h1>SuperChat</h1>
-            <p>{{ state.msgs[1].txt }}</p>
+            <!-- <p>{{ state.msgs[state.msgs.length - 1].txt }}</p> -->
         </div>
     </div>
-    <button>+</button>
+    <button class="add">+</button>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { getmsgs } from '../firebase';
 import state from '../store';
 import Nav from "./Nav.vue";
+
+onMounted(() => {
+    getmsgs();
+});
 
 </script>
 
@@ -24,7 +30,6 @@ import Nav from "./Nav.vue";
 .chat {
     display: flex;
     align-items: center;
-    justify-content: ;
     background-color: aqua;
     padding: 1rem;
     flex-wrap: wrap;
@@ -44,5 +49,23 @@ import Nav from "./Nav.vue";
 .chat p {
     margin-right: auto;
     overflow: hidden;
+}
+
+.add {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    right: 0;
+    border: 0;
+    margin: 3rem 4rem;
+    padding: 0 .3em;
+    font-size: 3em;
+    border-radius: 50%;
+    background-color: rgb(185, 203, 217);
+    box-shadow: 1px 1px grey;
+}
+
+.add:hover {
+    background-color: rgb(130, 143, 152);
 }
 </style>

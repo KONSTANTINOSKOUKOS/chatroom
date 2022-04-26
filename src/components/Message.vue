@@ -1,7 +1,7 @@
 <template>
     <span v-if="!ismine()" :class="ismine() ? 'right' : 'left'" class="name">{{ msg.name }}</span>
     <div :class="ismine() ? 'right' : 'left'">
-        <img v-if="pfpimg != '' && ismine() != true" :src="pfpimg">
+        <img v-if="pfpimg != '' && ismine() == false" :src="pfpimg">
         <p @dblclick="likee()" :class="msg.sender == state.user.uid ? 'senders' : 'others'">{{
                 msg.txt
         }}</p>
