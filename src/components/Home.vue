@@ -4,21 +4,23 @@
         <div class="chat">
             <img :src="state.user.photoURL">
             <h1>SuperChat</h1>
-            <!-- <p>{{ state.msgs[state.msgs.length - 1].txt }}</p> -->
+            <p>{{ state.msgs[state.msgs.length - 1].txt }}</p>
         </div>
     </div>
     <button class="add">+</button>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getmsgs } from '../firebase';
 import state from '../store';
 import Nav from "./Nav.vue";
 
-onMounted(() => {
+onMounted(async () => {
     getmsgs();
 });
+
+const msgs = ref(state.msgs);
 
 </script>
 

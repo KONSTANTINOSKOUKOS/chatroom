@@ -6,7 +6,7 @@ import state from './store';
 import { istate } from './store';
 import { Ref } from 'vue';
 
-import { Firestore, collection, doc, setDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import {
     GoogleAuthProvider,
     signInWithPopup,
@@ -30,14 +30,15 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-export function getmsgs() {
-    const coll = collection(db, 'messages');
+export function getmsgs() {    
     state.msgs = [];
+    const coll = collection(db, 'messages');
     const q = query(coll, orderBy('date', 'asc'));
     const unsub = onSnapshot(q, (docs) => {
         state.msgs = [];
         docs.forEach(doc => {
             state.msgs.push(doc.data());
+            console.log(state.msgs);
         });
     });
 };
