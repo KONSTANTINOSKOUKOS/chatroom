@@ -16,18 +16,18 @@ import { send, getmsgs } from '../firebase';
 const msg = ref('');
 const dum = ref<null | HTMLDivElement>(null);
 
-const scroll = () => {
-    dum.value.scrollIntoView({ behavior: 'smooth' });
+const scroll = (bhvr) => {
+    dum.value.scrollIntoView({ behavior: bhvr });
 }
 
 onMounted(async () => {
-    scroll();
+    scroll('auto');
     getmsgs();
 });
 
 const sendd = async () => {
     send(msg);
-    scroll();
+    scroll('smooth');
 }
 </script>
 
@@ -39,7 +39,7 @@ const sendd = async () => {
     width: 100%;
     /* height: 4vh; */
     display: flex;
-    margin-bottom: 1vh;
+    margin-bottom: 6.2vh;
     justify-content: center;
     align-items: center;
     flex-direction: column;

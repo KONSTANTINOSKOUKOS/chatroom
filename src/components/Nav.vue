@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <button @click="logout()">Log out</button>
+        <button @click="signout">Log out</button>
         <img :src="state.user.photoURL">
     </nav>
 </template>
@@ -8,7 +8,13 @@
 <script lang="ts" setup>
 import state from '../store';
 import { logout } from "../firebase";
+import { logoutrouter } from "../router";
 
+
+const signout = () => {
+logout();
+logoutrouter();
+}
 </script>
 
 <style scoped>

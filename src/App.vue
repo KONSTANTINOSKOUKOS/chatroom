@@ -1,17 +1,22 @@
 <template>
   <Auth v-if="!state.user" />
 
-  <!-- <Chat v-else /> -->
-  <Home v-else />
+  <div v-else>
+    <Nav/>
+    <router-view></router-view>
+    <PagesNav />
+  </div>
+  <!-- <Home /> -->
 </template>
 <script setup lang="ts">
 import state from "./store";
 import { provide } from "vue";
 import { db, auth } from "./firebase";
 
-import Chat from "./components/Chat.vue";
 import Auth from "./components/Auth.vue";
-import Home from './components/Home.vue';
+
+import PagesNav from "./components/PagesNav.vue";
+import Nav from "./components/Nav.vue";
 
 provide("db", db);
 provide("state", state);
@@ -27,3 +32,4 @@ provide("auth", auth);
   box-sizing: border-box;
 }
 </style>
+  

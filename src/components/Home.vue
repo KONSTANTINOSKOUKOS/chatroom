@@ -1,10 +1,10 @@
 <template>
     <Nav />
     <div class="chat-cont">
-        <div class="chat">
+        <div @click="$router.push({ name: 'Chat' });" class="chat">
             <img :src="state.user.photoURL">
             <h1>SuperChat</h1>
-            <p>{{ state.msgs[state.msgs.length - 1].txt }}</p>
+            <!-- <p><strong style="font-weight: 700;">{{lastmsg.name}}:</strong> {{ lastmsg.txt }}</p> -->
         </div>
     </div>
     <button class="add">+</button>
@@ -17,10 +17,11 @@ import state from '../store';
 import Nav from "./Nav.vue";
 
 onMounted(async () => {
+    scroll(0, 0);
     getmsgs();
 });
 
-const msgs = ref(state.msgs);
+const lastmsg = ref(state.msgs[state.msgs.length - 1]);
 
 </script>
 
@@ -50,6 +51,7 @@ const msgs = ref(state.msgs);
 
 .chat p {
     margin-right: auto;
+    margin: 0 auto;
     overflow: hidden;
 }
 
@@ -59,7 +61,7 @@ const msgs = ref(state.msgs);
     bottom: 0;
     right: 0;
     border: 0;
-    margin: 3rem 4rem;
+    margin: 4rem 3rem;
     padding: 0 .3em;
     font-size: 3em;
     border-radius: 50%;

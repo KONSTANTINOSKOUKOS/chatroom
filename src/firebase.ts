@@ -30,7 +30,7 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-export function getmsgs() {    
+export function getmsgs() {
     state.msgs = [];
     const coll = collection(db, 'messages');
     const q = query(coll, orderBy('date', 'asc'));
@@ -38,7 +38,6 @@ export function getmsgs() {
         state.msgs = [];
         docs.forEach(doc => {
             state.msgs.push(doc.data());
-            console.log(state.msgs);
         });
     });
 };
@@ -103,3 +102,11 @@ export function logout() {
         state.user = null;
     });
 };
+
+// export async function addcontact() {
+//     //const chats = collection(db, 'chats');
+//     const contact = {
+//         users:[state.user,]
+//     }
+//     await setDoc(doc(db,'contacts'),contact);
+// }
